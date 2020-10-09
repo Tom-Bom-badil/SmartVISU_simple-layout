@@ -1,0 +1,34 @@
+{% extends "2blocks.html" %}
+
+{% block one %}
+
+	{% import "helios.html" as helios %}
+	{{ helios.show_widget('EC300Pro', true, 'Kontrollierte Wohnraumlüftung') }}
+
+{% endblock %}
+
+{% block two %}
+	
+	<div class="block" style="width:100%; height:20%; float:left;">
+	/** Farbe #f0f entspricht #ff00ff, #f0f3 entspricht #ff00ff33 **/
+	{{ plot.period('plot1', ['ventilation.rs485._outside_temp', 'ventilation.rs485._incoming_temp', 'ventilation.rs485._inside_temp','ventilation.rs485._exhaust_temp'],
+	'raw', '1w', 'now', '', '', '', ['AT', 'Zu', 'Ab', 'Fort'], ['#f0f', '#f00', '#00f', '#ff0'], ['line', 'line', 'line', 'line'],
+	'', '') }}
+	/** '', 'advanced') }} **/
+	</div>
+	
+	<div class="block" style="width:100%; height:20%; float:left;">
+	{{ plot.period('plot2', ['ventilation.rs485._fanspeed', 'ventilation.rs485._heating_on_off', 'ventilation.fans.supply.is_on'],
+	'raw', '1w', 'now', -0.1, 8, '', ['Lüftungsstufe', 'Vorheizung', 'Luftzufuhr'], ['#f0f3', '#f00', '#0f0'], ['areastair', 'stair', 'stair'],
+	'', '')  }}
+	/** '', 'advanced') }} **/
+	</div>
+	
+{% endblock %}
+
+
+
+
+/** {{ plot.period('frost_monitoring', ['ventilation.rs485._fanspeed', 'ventilation.rs485._heating_on_off', 'ventilation.fans.supply.is_on'], 'raw', '1w', 'now', [-1,0,0], [8,1,1], '', ['Lüftungsstufe', 'Vorheizung', 'Luftzufuhr'], ['#f00', '#ff0', '#00f'], ['stair', 'stair', 'stair'], '', 'advanced', [1,2], [0,1,1], ['yellow','red'], ['linear', 'boolean'])  }} 
+{{ plot.period('', 'ventilation.rs485._fanspeed', 'raw', '24h', 'now', '0', '8', '', 'Lüftungsstufe', '#f00', 'areaspline', '', '5i')  }}
+{{ plot.period('plot3', 'ventilation.thermal_efficiency.efficiency', 'avg', '24h', '', 60, 100, '', 'Effizienz', '#f0f', 'spline', '', 'advanced') }} **/

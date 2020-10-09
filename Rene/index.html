@@ -1,0 +1,68 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "2blocks.html" %}
+
+{% block one %}
+
+	<div style="width:66%;margin-left:16%; margin-top: 50px;">
+		{% import "weather.html" as weather %}
+		<h1>Wetter in Potsdam jetzt</h1>
+		<br/>
+		{{ weather.current('weather') }}
+		<br/>
+		Temperatur aktuell: {{basic.print('','darksky.currently.temperature','°')}} (Gefühlt: {{basic.print('','darksky.currently.apparenttemperature','°')}})<br/>
+		<br/>
+		<br/>
+		<br/>
+		<h1>Wettervorhersage</h1>
+		<br/>
+		{{ weather.forecastweek('weather_forecast') }}
+		<br/>
+		{{basic.print('','darksky.daily.summary')}}
+	</div>
+	
+	/**
+	<div class="center">
+		<img style="height: 32px; vertical-align: middle;" src="lib/weather/pics/sun_up.png">
+		{{ basic.print('sunrise', 'env.location.sunrise', 'time') }} 
+		<img style="height: 32px; vertical-align: middle;" src="lib/weather/pics/sun_down.png">
+		{{ basic.print('sunset', 'env.location.sunset', 'time') }}
+	</div>
+	**/
+	
+{% endblock %}
+
+{% block two %}
+
+	<div style="width:66%;margin-left:17%;margin-top: 50px;">
+		{% import "calendar.html" as calendar %}
+		<h1>Nächste Termine</h1>
+		<br/>
+		{{ calendar.list('clist', '', '6', 'yellow', '', 'K1') }}
+		<br/>
+
+
+		<h1>Verpasste Anrufe</h1>
+		<br/>
+		{% import "phone.html" as phone %}
+		{{ phone.missedlist('phonelist', '', 4) }}
+		<br/>
+
+		<h1>Müllabfuhr</h1>
+		<br/>
+		{{ calendar.waste('waste', '', 'muell', 5) }}
+	</div>
+
+{% endblock %}
+
+
+{% block bottomline %}
+
+{% endblock %}

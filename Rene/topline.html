@@ -1,0 +1,149 @@
+<div data-role="header" data-position="fixed" data-role="listview" class="ui-listview"> 
+	
+	<ul data-role="listview" class="ui-listview">
+	
+		<li class="headerbutton1 ui-li-has-thumb">
+			<a href="#nav-panel" class="ui-btn">
+				<div style="font-size:xx-large;">
+					<img class='icon' style="height:1em;" src='{{icon0}}jquery_bars.svg'>
+				</div>
+				<small>Menü</small>
+			</a>
+		</li>		
+
+		<li class="headerbutton2 ui-li-has-thumb">
+			<a href="index.php" class="ui-btn">
+				<div style="font-size:xx-large;">
+					{{ basic.print('', 'heizung.sensoren.af1', '°C', 'Math.round(VAR)', [0,15,25], ['blue','lightblue','green','orange']) }}
+				</div>
+				<small>←⌂ Außen</small>
+			</a>
+		</li>
+
+		<li class="headerbutton2 ui-li-has-thumb">
+			<a href="index.php?page=haus" class="ui-btn">
+				<div style="font-size:xx-large;">
+					{{ basic.print('', 'ventilation.rs485._inside_temp', '°C', 'Math.round(VAR)', [20,25], ['lightblue','green','orange']) }}				
+				</div>
+				<small>→⌂ Innen</small>
+			</a>
+		</li>
+		
+		<li data-icon="false" class="headerbutton2 ui-li-has-thumb">
+			<a href="index.php?page=heizung" class="ui-btn">
+				<div style="font-size:xx-large;">
+					{{ basic.print('', 'heizung.sensoren.sf1', '°C', 'Math.round(VAR)', [45,65], ['blue','green','red']) }}
+				</div>
+				<small>≈ Warmwasser</small>
+			</a>
+		</li>
+		
+		<li data-icon="false" class="headerbutton2 ui-li-has-thumb">
+			<a href="index.php?page=heizung" class="ui-btn">
+				<div style="font-size:xx-large;">
+					{{ basic.print('', 'heizung.sensoren.vf1', '°C', 'Math.round(VAR)', [25,40], ['blue','green','red']) }}
+				</div>
+				<small>_&nbsp;Heizung Vorlauf</small>
+			</a>
+		</li>
+	
+		<li data-icon="false" class="headerbutton2 ui-li-has-thumb">
+			<a href="index.php?page=lueftung" class="ui-btn">
+				<div style="font-size:xx-large;">
+					{{ basic.print('', 'ventilation.rs485._incoming_temp', '°C', 'Math.round(VAR)', [15,20,25], ['blue','lightblue','green','orange']) }}
+				</div>
+				<small>KWL:&nbsp;Zuluft</small>
+			</a>
+		</li>
+
+		<li data-icon="false" class="headerbutton2 ui-li-has-thumb">
+			<a href="index.php?page=lueftung" class="ui-btn">
+				<div style="font-size:xx-large;">
+					{{ basic.print('', 'ventilation.rs485._exhaust_temp', '°C', 'Math.round(VAR)', [0,4,25], ['blue','lightblue','green','orange']) }}
+				</div>
+				<small>KWL:&nbsp;Fortluft</small>
+			</a>
+		</li>
+
+		<li data-icon="false" class="headerbutton2 ui-li-has-thumb">
+			<a href="index.php?page=lueftung" class="ui-btn">
+				<div style="font-size:xx-large;">
+				/**	{{ plot.gauge('', 'ventilation.rs485._fanspeed', 1, 8, '', '', 'solid-half', [50,75], ['green','orange']) }} **/
+				{{ basic.print('', 'ventilation.rs485._fanspeed', '%d / 8', '', [4,6], ['green','orange','red']) }}
+				</div>
+				<small>≡&nbsp;Lüftungsstufe</small>
+			</a>
+		</li>
+
+		<li data-icon="false" class="headerbutton2 ui-li-has-thumb">
+			<a href="index.php?page=lueftung" class="ui-btn">
+				<div style="font-size:xx-large;">
+					{{ basic.print('', 'ventilation.thermal_energy.efficiency', '%', '', [50,75], ['red','orange','green']) }}
+				</div>
+				<small>KWL: Effizienz</small>
+			</a>
+		</li>
+		
+	</ul>
+
+    <div id="nav-panel" data-position-fixed="true"  data-display="overlay" data-role="panel" data-theme="a">
+
+        <div data-role="controlgroup">
+
+			<a href="index.php" data-role="button" class="menubutton_frame">
+				<img class='icon menubutton_pic' src='{{icon0}}jquery_calendar.svg'>
+				<div class="menubutton_text">Wetter/Termine</div>
+			</a>
+
+			<a href="index.php?page=haus" data-role="button" class="menubutton_frame">
+				<img class='icon menubutton_pic' src='{{icon0}}temp_inside.svg'>
+				<div class="menubutton_text">Raumklima</div>
+			</a>
+
+			<a href="index.php?page=heizung" data-role="button" class="menubutton_frame">
+				<img class='icon menubutton_pic' src='{{icon0}}sani_heating_temp.svg'>
+				<div class="menubutton_text">Heizung</div>
+			</a>
+
+			/**
+			<a href="index.php?page=heizung2" data-role="button" class="menubutton_frame">
+				<img class='icon menubutton_pic' src='{{icon0}}sani_heating_temp.svg'>
+				<div class="menubutton_text">Heizung II</div>
+			</a>
+			**/
+
+			<a href="index.php?page=lueftung" data-role="button" class="menubutton_frame">
+				<img class='icon menubutton_pic' src='{{icon0}}vent_ventilation_level_3.svg'>
+				<div class="menubutton_text">Lüftung</div>
+			</a>
+
+			<a href="index.php?page=lueftung2" data-role="button" class="menubutton_frame">
+				<img class='icon menubutton_pic' src='{{icon0}}vent_ventilation_level_3.svg'>
+				<div class="menubutton_text">Lüftung NEU</div>
+			</a>
+
+			<a href="index.php?page=config" data-role="button" class="menubutton_frame">
+				<img class='icon menubutton_pic' src='{{icon0}}jquery_gear.svg'>
+				<div class="menubutton_text">Einstellungen</div>
+			</a>
+
+			<a href="http://192.168.178.7/smartvisu/index.php?pages=docu&page=index" data-role="button" class="menubutton_frame" target="_blank">
+				<img class='icon menubutton_pic' src='{{icon0}}edit_copy.svg'>
+				<div class="menubutton_text">sV Doku</div>
+			</a>
+
+			<a href="index.php?page=bastelecke" data-role="button" class="menubutton_frame" target="_blank">
+				<img class='icon menubutton_pic' src='{{icon0}}edit_copy.svg'>
+				<div class="menubutton_text">Bastelecke</div>
+			</a>
+
+            <a href="#" data-rel="close" data-role="button" class="menubutton_frame">
+				<img class='icon menubutton_pic' src='{{icon0}}jquery_delete.svg'>
+				<div class="menubutton_text">Menü schließen</div>
+			</a>
+
+		</div>
+		
+    </div>
+
+</div>

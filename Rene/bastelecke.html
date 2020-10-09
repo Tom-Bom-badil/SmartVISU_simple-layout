@@ -1,0 +1,281 @@
+{% extends "1block.html" %}
+
+{% block one %}
+
+	<div class="mainblock">
+		<h1>Bastelecke</h1><br/><br/>
+		{{ plot.period('', 'heizung.sensoren.af1', 'raw', '1w', 'now') }}
+		{{ plot.period('', ['heizung.sensoren.af1','heizung.sensoren.af1'], 'raw', ['2w','1w'], ['1w','now']) }}
+		
+		<div class="content_in_mainblock">
+			{{ _self.ventilation_gauge('blub','ventilation.rs485._fanspeed', 'ventilation.airflow.supply_fan.effective' ,'ventilation.parameters.max_airflow', 'ventilation.airflow.DIN.moisture_protection', 'ventilation.airflow.DIN.reduced_air_exchange', 'ventilation.airflow.DIN.normal_air_exchange', 'ventilation.airflow.DIN.boost_air_exchange') }}
+		</div>
+	</div>
+
+
+
+/**
+* Displays a gauge showing the current airflow of a ventilation unit
+*
+* @param {item_level} an item that holds the current ventilation level of this device
+*
+* @param {item_air} an item that holds the current air volume in m³ of this device
+* @param {item_airmax} an item that holds the maximum air volume in m³ of this device
+*
+* @param {item_feuchteschutz} an item that holds DIN Feuchteschutz in m³ for this house
+* @param {item_grundlueftung} an item that holds DIN Grundlueftung in m³ for this house
+* @param {item_nennlueftung} an item that holds DIN Nennlueftung in m³ for this house
+* @param {item_stosslueftung} an item that holds DIN Stosslueftung in m³ for this house
+*
+* * DIN 1946-6:
+* Feuchteschutz = fWS * (-0,001 * Ane² + 1,15 * Ane + 20)
+* Grundlüftung = 0,7 * (-0,001 * Ane² + 1,15 * Ane + 20)
+* Nennlüftung = -0,001 * Ane² + 1,15 * Ane + 20
+* Stosslüftung = 1,15 * (-0,001 * Ane² + 1,15 * Ane + 20)
+* * Ane = Fläche der Nutzungseinheit
+* * fWS = Faktor des Wärmeschutzes (0.3=neue/sanierte Gebäude, sonst 0.4)
+*
+* @author René Jahncke aka Tom Bombadil
+* @info   Thanks to Stefan Widmer aka smailee for figuring out how to modify the gauge!
+**/
+{% macro ventilation_gauge(id, item_level, item_air, item_airmax, item_feuchteschutz, item_grundlueftung, item_nennlueftung, item_stosslueftung) %}
+    
+    <div /** id={% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} **/
+		id = "ventilation_gauge"
+        class=""
+		style="width: 400px; height: 400px;"
+		data-widget="ventilation_gauge"
+        data-item="{{ item_level }}, {{ item_air }}, {{ item_airmax }}, {{ item_feuchteschutz }}, {{ item_grundlueftung }}, {{ item_nennlueftung }}, {{ item_stosslueftung }}"
+		data-highcharts-chart="{{ item_air }}">
+        /** hier ggf weitere Elemente innerhalb des DIV's **/
+    </div>
+	
+	<script type="text/javascript">
+		// ----- helios.kwlgauge ----------------------------------------------------------
+		$.widget("sv.ventilation_gauge", $.sv.widget, {
+			
+			initSelector: '[data-widget="ventilation_gauge"]',
+			
+			options: {
+				item_level: '',
+				item_air: '',
+				item_airmax: '',
+				item_feuchteschutz: '',
+				item_grundlueftung: '',
+				item_nennlueftung: '',
+				item_stosslueftung: ''
+			},
+			
+			_create: function() {
+
+				this._super();
+
+				var level = this.options.item_level, air = this.options.item_air, airmax = this.options.item_airmax;
+				var feuchteschutz = this.options.item_feuchteschutz, grundlueftung = this.options.item_grundlueftung;
+				var nennlueftung = this.options.item_nennlueftung, stosslueftung = this.options.item_stosslueftung;
+
+				Highcharts.chart('ventilation_gauge', {
+
+					chart: {
+						type: 'gauge',
+						height: '53%',
+						margin: [-30, 15, 30, 15],
+						backgroundColor: 'transparent',
+						plotBackgroundColor: 'transparent',
+						plotBackgroundImage: null,
+						plotBorderWidth: 0,
+						plotShadow: false
+					},
+
+					title: '',
+
+					pane: {
+						startAngle: -90,
+						endAngle: 90,
+						background: null,
+								size: '140%',
+								center: ['50%', '96%']
+					},
+
+					plotOptions: {
+						gauge: {
+							dial: {
+								radius: '90%',
+								backgroundColor: '#d2d2d2',
+								borderWidth: 0,
+								baseWidth: 13,
+								topWidth: 0,
+								baseLength: '0%',
+								rearLength: '0%'
+							},
+							pivot: {
+								backgroundColor: '#d2d2d2',
+								radius: 6            		
+							}
+						}
+					},
+
+					// the value axis
+					yAxis: {
+						min: 0,
+						max: airmax,
+						title: {
+							text: ''
+						},
+						lineWidth: 0,
+						tickPositions: [ feuchteschutz, grundlueftung, nennlueftung, stosslueftung ],
+						tickWidth: 0,
+						minorTicks: false,
+						labels: {
+								rotation: 'auto',
+							distance: 3,
+							style: {
+								color: 'white',
+								fontSize: '80%'
+							  }
+						},
+						
+						plotBands: [{
+							className: 'plotband-c1',
+							thickness: '60%',
+							from: 0,
+							to: this.options.item_feuchteschutz
+						}, {
+							className: 'plotband-c2',
+							thickness: '60%',
+							from: feuchteschutz,
+							to: grundlueftung
+						}, {
+							className: 'plotband-c3',
+							thickness: '60%',
+							from: grundlueftung,
+							to: nennlueftung
+						}, {
+							className: 'plotband-c4',
+							thickness: '60%',
+							from: nennlueftung,
+							to: stosslueftung
+						}, {
+							className: 'plotband-c5',
+							thickness: '60%',
+							from: stosslueftung,
+							to: airmax
+						}]
+					},
+
+					series: [{
+						name: 'Aktuell',
+						data: [ air ],
+						tooltip: {
+							valueSuffix: ' m³/h'
+						},
+						dataLabels: {
+								format: '{series.name}<br>{y} m³/h',
+								borderWidth: 0,
+							y: 10,
+							style: {
+								color: 'white',
+								fontWeight: 'normal'
+							}
+						}
+					}],
+
+					credits: {
+						enabled: false
+					}
+
+				})
+				
+			},
+			
+			_update: function(response) {
+				
+				var chart = this.element.highcharts();
+
+				/*
+				var items = String(this.options.item).explode();
+				
+				var tempstr1 = '|';
+				var tempstr2 = '\n|';
+
+				for(var i = 0; response.length; i++) {
+					var value = response.shift();
+					tempstr1 += items[i] + '|\n';
+					tempstr2 += value + '|';
+					
+					//var value = response[i];
+				}
+				
+				alert(tempstr1+tempstr2);
+				*/
+				
+				chart.series[0].data[0]=response.shift();
+				chart.redraw();
+
+/*
+
+				chart.yAxis[0].removePlotBand();
+
+				//for(var i = 0; i <= 4; i++) {
+				for(var i = 0; response.length-1; i++) {
+					var value = response.shift();
+					tempstr1 += items[i] + '|';
+					tempstr2 += value + '|';
+					
+					if(i==0) {
+						chart.series[0].data[0]=value;
+
+					  } else if(i==1) {
+						chart.yAxis[0].max = value;
+
+                      // die PlotBands schon beim create nach der Chart-Definition hinzufügen , dann wird update Zweizeiler (max=response[2] und redraw)
+
+
+					  } else if(i==2) {
+						chart.yAxis[0].addPlotBand({
+							className: 'plotband-c1',
+							thickness: '60%',
+							from: 0,
+							to: value
+						});
+
+					  } else if(i==3) {
+						chart.yAxis[0].addPlotBand({
+							className: 'plotband-c2',
+							thickness: '60%',
+							from: prev_value,
+							to: value
+						});
+
+					  }
+					var prev_value = value;
+				}
+
+
+				
+				// alert(tempstr1);
+				// alert(tempstr2);
+				chart.redraw();
+				alert(tempstr1+tempstr2);
+
+				//chart.series[0].data[0].update(response, false);
+				//ventilation_gauge.display();
+				
+*/				
+				
+			},
+			
+			//ventilation_gauge.display()
+			//neu*********************************************************************
+
+		});
+	</script> 
+	
+	
+{% endmacro %}
+
+{% endblock %}
+
+{% block two %}
+
+{% endblock %}

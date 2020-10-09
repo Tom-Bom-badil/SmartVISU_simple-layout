@@ -1,0 +1,263 @@
+{% extends "1block.html" %}
+
+{% block one %}
+
+	<style type="text/css">
+		.hauspic {
+			width: 70%;
+			height: 100%;
+			display: block;
+			margin-left: auto;
+			margin-right: auto;
+			opacity: 0.8;
+		}
+		.wetter {
+			position: absolute;
+			width: 220px;
+			height: 200px;
+			margin-top: -835px;
+			margin-left: 60px;
+		}
+		.weather .temp {
+			padding-top: 30px;
+			font-size: 25pt;
+			text-align: center;
+		}
+		.temp_eg {
+			position: absolute;
+			// margin-top: -225px;
+			margin-top: -12%;
+			// margin-left: 815px;
+			margin-left: 54%;
+		}
+		.temp_sz {
+			position: absolute;
+			// margin-top: -450px;
+			margin-top: -24%;
+			// margin-left: 815px;
+			margin-left: 54%;	
+		}
+		.temp_kz {
+			position: absolute;
+			// margin-top: -450px;
+			margin-top: -24%;
+			// margin-left: 335px;
+			margin-left: 28%;
+		}
+		.temp_dg {
+			position: absolute;
+			// margin-top: -666px;
+			margin-top: -36%;
+			// margin-left: 799px;
+			margin-left: 54%;
+		}
+		.temp_s1 {
+			position: absolute;
+			margin-top: -12%;
+			margin-left: 70%;
+			background-color: darkgrey;
+		}
+		.kwl_temps {
+		    text-align: left;
+			font-size: large;
+			font-weight: 900;
+			position: absolute;
+			margin-top: -510px;
+			margin-left: 75%;
+		}
+		.heizung_temps {
+			text-align: left;
+			font-size: large;
+			font-weight: 900;
+			position: absolute;
+			margin-top: -155px;
+			margin-left: 25%;
+		}
+
+		.infobutton {
+			display: inline-block;
+			background-color: transparent;
+			text-align: center;
+			font-size: large;
+			font-family: sans-serif;
+			font-weight: bold;
+			padding: 10px;
+			// border: 1px solid rgba(20.20,20, 0.1);
+			border: 1px solid rgba(20,20,20,0.1);
+			border-radius: 16px;
+			box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+		}
+
+		.infobutton a {
+			text-decoration: none;
+		}
+		
+		.Infobutton a:hover {
+			background-color: #90529c;
+			color: white;
+			cursor: hand;
+		}
+		
+		.Infobutton a:visited, a:link, a:active {
+			background-color: none;
+			cursor: hand;
+		}
+		
+		.bl {
+			color: #7185e4;
+		}
+		.gn {
+			color: #00f900;
+		}
+		.or {
+			color: orange;
+		}
+		.centerbox {
+			width:50%;
+			height:auto;
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+		.centerbox_header {
+			text-align: center;
+			padding-top: 5px;
+			padding-bottom: 5px;
+			font-size: larger;
+			border-radius: 4px;
+		}
+		
+		.infobutton_temphum_LED {
+			position: absolute;
+			right: 8px;
+			top: -4px;
+		}
+		
+	</style>
+	
+
+	/** {% import "lib.html" as lib %} **/
+	/** {{ plot.period(id, item, mode, tmin, tmax, ymin, ymax, count, label, color, exposure, axis, zoom, assign, opposite, ycolor, ytype, unit, chartoptions) }} 
+		{{ basic.symbol(id, items, text, icon, value, formula, color, href, rel) }} **/
+		
+		
+	/** Evtl Alternative für basic.print weiter unten:
+	Das unten gibt bspw. den Text "Zur Arbeit via" aus, wenn das Item den Wert 1 hat.
+	{{ basic.symbol('location.calculate_way_work', 'general.location.calculate_way_work', 'Zur Arbeit via ', '', '1') }}
+	**/
+	
+	<div class='block' style='text-align:left;width:100%;'>
+
+		<br/>
+		<img class='hauspic' src='pages/Rene/pics/haus_seitenansicht-2.png' alt='Seitenansicht' >
+	
+		/** ********* EG ********************* **/
+		<div class="infobutton temp_eg">
+			<a href="#eg_temphum_popup" data-rel="popup">
+				<div class="infobutton_temphum_LED">{{basic.symbol('', 'klima.eg.isOnline', ['•','•'],'',[1,0],'',['lime','red'])}}</div>
+				{{basic.print('','klima.eg.Sensor.Temperature','%.1f °C','','[20,25]',['deepskyblue,lime,orange'])}}<br/>
+				{{basic.print('','klima.eg.Sensor.Humidity',   ' %','','[40,60]',['deepskyblue,lime,orange'])}}
+			</a>
+		</div>
+		<div id="eg_temphum_popup" class="centerbox" data-role="popup" data-overlay-theme="c" style="width: 75%;">
+			<a href="#" class="ui-btn-right" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" >Close</a>
+			<div data-role="header" class="centerbox_header"> Erdgeschoss - Wochenansicht </div>
+			<br/>
+			{{ plot.period('', ['klima.eg.Sensor.Humidity','klima.eg.Sensor.Temperature'], 'raw', '1w', 'now', [30,22], [70,26], '', ['Feuchte','Temperatur'], ['chocolate','yellow'], ['area','line'], ['','%','°C'], 'advanced', ['1','2'], ['0','1'], ['chocolate','yellow'], '', ['%','°C']) }}
+			<br/>
+		</div>
+
+		/** ********* SZ ********************* **/
+		<div class="infobutton temp_sz">
+			<a href="#sz_temphum_popup" data-rel="popup">
+				<div class="infobutton_temphum_LED">{{basic.symbol('', 'klima.sz.isOnline', ['•','•'],'',[1,0],'',['lime','red'])}}</div>
+				{{basic.print('','klima.sz.Sensor.Temperature','%.1f °C','','[20,25]',['deepskyblue,lime,orange'])}}<br/>
+				{{basic.print('','klima.sz.Sensor.Humidity',   ' %','','[40,60]',['deepskyblue,lime,orange'])}}
+			</a>
+		</div>
+		<div id="sz_temphum_popup" class="centerbox" data-role="popup" data-overlay-theme="c" style="width: 75%;">
+			<a href="#" class="ui-btn-right" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" >Close</a>
+			<div data-role="header" class="centerbox_header"> Schlafzimmer - Wochenansicht </div>
+			<br/>
+			{{ plot.period('', ['klima.sz.Sensor.Humidity','klima.sz.Sensor.Temperature'], 'raw', '1w', 'now', [30,20], [70,27], '', ['Feuchte','Temperatur'], ['chocolate','yellow'], ['area','line'], ['','%','°C'], 'advanced', ['1','2'], ['0','1'], ['chocolate','yellow'], '', ['%','°C']) }}
+			<br/>
+		</div>		
+		
+		/** ********* KZ ********************* **/
+		<div class="infobutton temp_kz">
+			<a href="#kz_temphum_popup" data-rel="popup">
+				<div class="infobutton_temphum_LED">{{basic.symbol('', 'klima.kz.isOnline', ['•','•'],'',[1,0],'',['lime','red'])}}</div>
+				{{basic.print('','klima.kz.Sensor.Temperature','%.1f °C','','[20,25]',['deepskyblue,lime,orange'])}}<br/>
+				{{basic.print('','klima.kz.Sensor.Humidity',   ' %','','[40,60]',['deepskyblue,lime,orange'])}}
+			</a>
+		</div>
+		<div id="kz_temphum_popup" class="centerbox" data-role="popup" data-overlay-theme="c" style="width: 75%;">
+			<a href="#" class="ui-btn-right" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" >Close</a>
+			<div data-role="header" class="centerbox_header"> Kinderzimmer - Wochenansicht </div>
+			<br/>
+			{{ plot.period('', ['klima.kz.Sensor.Humidity','klima.kz.Sensor.Temperature'], 'raw', '1w', 'now', [30,20], [70,27], '', ['Feuchte','Temperatur'], ['chocolate','yellow'], ['area','line'], ['','%','°C'], 'advanced', ['1','2'], ['0','1'], ['chocolate','yellow'], '', ['%','°C']) }}
+			<br/>
+		</div>				
+
+		/** ********* DG ********************* **/
+		<div class="infobutton temp_dg">
+			<a href="#dg_temphum_popup" data-rel="popup">
+				<div class="infobutton_temphum_LED">{{basic.symbol('', 'klima.dg.isOnline', ['•','•'],'',[1,0],'',['lime','red'])}}</div>
+				{{basic.print('','klima.dg.Sensor.Temperature','%.1f °C','','[20,25]',['deepskyblue,lime,orange'])}}<br/>
+				{{basic.print('','klima.dg.Sensor.Humidity',   ' %','','[40,60]',['deepskyblue,lime,orange'])}}
+			</a>
+		</div>
+		<div id="dg_temphum_popup" class="centerbox" data-role="popup" data-overlay-theme="c" style="width: 75%;">
+			<a href="#" class="ui-btn-right" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" >Close</a>
+			<div data-role="header" class="centerbox_header"> Dachgeschoss - Wochenansicht </div>
+			<br/>
+			{{ plot.period('', ['klima.dg.Sensor.Humidity','klima.dg.Sensor.Temperature'], 'raw', '1w', 'now', [30,20], [70,27], '', ['Feuchte','Temperatur'], ['chocolate','yellow'], ['area','line'], ['','%','°C'], 'advanced', ['1','2'], ['0','1'], ['chocolate','yellow'], '', ['%','°C']) }}
+			<br/>
+		</div>				
+		
+		/** ********* Schuppen1 (Fahrradschuppen) ********************* **/
+		<div class="infobutton temp_s1" style="background-color:dimgrey;">
+			<a href="#s1_temphum_popup" data-rel="popup">
+				<div class="infobutton_temphum_LED">{{basic.symbol('', 'klima.schuppen1.isOnline', ['•','•'],'',[1,0],'',['lime','red'])}}</div>
+				<div>{{basic.print('','klima.schuppen1.Sensor.Temperature','%.1f °C','','[ 0,25]',['deepskyblue,lime,orange'])}}</div>
+				<div>{{basic.print('','klima.schuppen1.Sensor.Humidity',   ' %','','[40,60]',['deepskyblue,lime,orange'])}}</div>
+			</a>
+		</div>
+		<div id="s1_temphum_popup" class="centerbox" data-role="popup" data-overlay-theme="c" style="width: 75%;">
+			<a href="#" class="ui-btn-right" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" >Close</a>
+			<div data-role="header" class="centerbox_header"> Fahrradschuppen - Wochenansicht </div>
+			<br/>
+			/** {{ plot.period('', ['klima.schuppen1.Sensor.Humidity','klima.schuppen1.Sensor.Temperature'], 'raw', '1w', 'now', [0,0], [100,60], '', ['Feuchte','Temperatur'], ['chocolate','yellow'], ['area','line'], ['','%','°C'], 'advanced', ['1','2'], ['0','1'], ['chocolate','yellow'], '', ['%','°C']) }} **/
+			{{ plot.period('', ['klima.schuppen1.Sensor.Humidity','klima.schuppen1.Sensor.Temperature'], 'raw', '1w', 'now', ['',''], ['',''], '', ['Feuchte','Temperatur'], ['chocolate','yellow'], ['area','line'], ['','%','°C'], 'advanced', ['1','2'], ['0','1'], ['chocolate','yellow'], '', ['%','°C']) }}
+			<br/>
+		</div>	
+
+		<div class="kwl_temps">
+			Kwl<br/>
+			{{basic.print(id~'kwl_T_zu','	ventilation.rs485._incoming_temp','°C','','[19,25]','[orange,#00f900,orange]')}}
+			&nbsp;<&nbsp;----------&nbsp;
+			{{basic.print(id~'kwl_T_frisch','ventilation.rs485._outside_temp','°C','','[10,25]','[#7185e4,#00f900,orange]')}}<br/>
+			{{basic.print(id~'kwl_T_ab','ventilation.rs485._inside_temp','°C','','[10,25]','[#7185e4,#00f900,orange]')}}
+			&nbsp;----------&nbsp;>&nbsp;
+			{{basic.print(id~'kwl_T_fort','ventilation.rs485._exhaust_temp','°C','','[10,25]','[#7185e4,#00f900,orange]')}}<br/>
+		</div>
+
+		<div class="heizung_temps">
+			Heizung<br/>
+			Vorlauf:<br/>
+			Rücklauf:<br/>
+			/**
+			{{basic.print(id~'kwl_T_zu','	ventilation.rs485._incoming_temp','°C','','[19,25]','[orange,#00f900,orange]')}}
+			&nbsp;<&nbsp;----------&nbsp;
+			{{basic.print(id~'kwl_T_frisch','ventilation.rs485._outside_temp','°C','','[10,25]','[#7185e4,#00f900,orange]')}}<br/>
+			{{basic.print(id~'kwl_T_ab','ventilation.rs485._inside_temp','°C','','[10,25]','[#7185e4,#00f900,orange]')}}
+			&nbsp;----------&nbsp;>&nbsp;
+			{{basic.print(id~'kwl_T_fort','ventilation.rs485._exhaust_temp','°C','','[10,25]','[#7185e4,#00f900,orange]')}}<br/>
+			**/
+
+		</div>	
+	
+	</div>
+
+{% endblock %}

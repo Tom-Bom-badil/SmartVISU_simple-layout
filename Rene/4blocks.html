@@ -1,0 +1,93 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiß
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "root.html" %}
+
+{% block body %}
+
+	<style type="text/css">
+		.ui-right {
+			float: right;
+			margin-top: 5px;
+			margin-right: 5px;
+		}
+		div#menu.menu {
+			float: left;
+			margin-left: 5px;
+		}
+	</style>
+
+	<div data-role="page" id="{{ page }}" class="base page-bg" data-theme="a">
+
+		<div data-role="header" data-position="fixed" data-tap-toggle="false">
+			<div class="ui-left">
+				{% include 'menu.html' %}
+			</div>
+			<div class="ui-right">
+				<a href="javascript:window.location.href=window.location.href" style="text-decoration:none;color:#fff;">
+					{{ lib.smartvisu() }}
+					<div class="mini">
+						{{ clock.miniclock('', lang('format','time') ~ ', ' ~ lang('format','day') ) }} v{{ config_version }}</div>
+				</a>
+			</div>
+		</div>
+
+		<div data-role="topline">
+			{% block topline %}{% endblock %}
+		</div>
+
+		<div data-role="content">
+			<div class="secondary" style="background-image: none;">
+				{% block left %}{% endblock %}
+			</div>
+			<div class="primary minimum-tablet">
+				{% block right %}{% endblock %}
+			</div>
+		</div>
+		
+		{% block bottomline %}{% endblock %}
+		
+	</div>
+
+{% endblock %}
+
+
+
+/**
+
+{% extends "base.html" %}
+
+{% block sidebar %}
+
+	{% import "lib.html" as lib %}
+	{{ lib.updatecheck() }}
+
+	{{ clock.digiclock('clock') }}
+
+	<div class="center">
+		 {{ clock.miniclock('', 'l, ' ~ lang('format','date') ) }}
+	</div>
+
+	<hr>
+
+	{% import "weather.html" as weather %}
+	{{ weather.current('weather') }}
+
+	<hr>
+
+	{{ weather.forecastweek('weather_forecast') }}
+
+	<hr>
+
+{% endblock %}
+
+{% block content %}
+	{% include 'rooms_menu.html' %}
+{% endblock %} **/

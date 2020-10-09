@@ -1,0 +1,52 @@
+{% extends "root.html" %}
+
+{% block body %}
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+	<style type="text/css">
+
+		.mainblock {
+			height: 100%;
+			width: 48% !important;
+			padding: 1%;
+			margin: 0px !important;
+			display: block;
+			overflow: hidden;
+		}
+
+		.content_in_mainblock {
+			width: 100%;
+			margin-top: 50%;
+			margin-left: 50%;
+			transform: translate(-50%, -50%);
+			overflow: hidden;
+		}
+		
+		body.ui-mobile-viewport {
+			overflow: hidden;
+		}
+		
+	</style>
+	
+	<div data-role="page" id="{{ page }}" class="base page-bg" data-theme="a">
+
+		{% block topline %} {% include 'topline.html' %} {% endblock %}
+
+		<div data-role="content">
+			
+			<div class="secondary mainblock" style="float:left;">
+				<div class="content_in_mainblock">{% block one %}{% endblock %}</div>
+			</div>
+			
+			<div class="primary mainblock" style="float:right;">
+				<div class="content_in_mainblock">{% block two %}{% endblock %}</div>
+			</div>
+			
+		</div>
+		
+		{% block bottomline %} {% include 'bottomline.html' %} {% endblock %}
+		
+	</div>
+
+{% endblock %}

@@ -1,0 +1,152 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012 - 2015
+ * @license     GPL [http://www.gnu.de]
+ * ----------------------------------------------------------------------------- 
+ */
+
+/**
+ * This file is for your own stylesheets.
+ */
+
+@CHARSET "UTF-8";
+
+
+.base {
+	overflow:  hidden;
+	margin:         0;
+	color:   	 #fff   /*{a-body-color}*/;
+	text-shadow:    0   /*{a-body-shadow-x}*/   1px   /*{a-body-shadow-y}*/   1px   /*{a-body-shadow-radius}*/   #111   /*{a-body-shadow-color}*/;
+	background:  #222   /*{a-body-background-color}*/;
+	background-image: linear-gradient( #111 /*{a-body-background-start}*/, #222 /*{a-body-background-end}*/)
+}
+
+.ui-mobile {
+	size: landscape;
+}
+
+.base .primary {
+  width: 50%;
+  height: 100%;
+}
+
+.base .secondary {
+  width: 49%;
+  height: 100%;
+}
+
+.base .oneblock {
+  width: 100%;
+  height: 100%;
+}
+
+
+.ui-listview > .ui-li-has-thumb > .ui-btn, .ui-listview > .ui-li-static.ui-li-has-thumb {
+	padding-left: 0px;
+	text-align: center;
+}
+
+.plot {
+  height: auto;
+}
+
+/** von Quad
+.content-primary {
+    width: 50%;
+    position: fixed;
+    top: 64px;
+    left: 0;
+    bottom: 0;
+    overflow: auto;
+}
+
+.content-secondary {
+    width: 50%;
+    position: fixed;
+    top: 64px;
+    right: 0;
+    bottom: 0;
+}
+**/
+
+
+/** Diverses **/
+
+.ui-right {
+	float: right;
+	margin-top: 5px;
+	margin-right: 5px;
+}
+
+div#menu.menu {
+	float: left;
+	margin-left: 5px;
+}
+
+
+/** Veränderte Anzeigen von Widgets **/
+
+#index-clist {
+	column-count: 2
+}
+
+.phonelist {
+	column-count: 2
+}
+
+
+
+/** Buttonleiste mit Menü oben **/
+
+.headerbutton1 {
+	float:left;
+	text-align:center;
+	border-right:solid black 1px;
+	padding-left: 0px;
+	height: 5% !important;
+	width: 7%;
+}
+
+.headerbutton2 {
+	float:left;
+	text-align:center;
+	border-right:solid black 1px;
+	padding-left: 0px;
+	height: 5% !important;
+	width: 11.52%;
+	display: inline;
+	overflow: hidden;
+	clear: right;
+}
+
+.listview {
+	white-space: nowrap;
+	display: inline;
+	clear: right;
+}
+
+.menubutton_frame {
+	position:relative;
+	width:85%;
+	padding-bottom:1.5em;
+	text-align:left;
+}
+
+.menubutton_pic {
+	position:fixed;
+	left:2.5em;	
+}
+
+.menubutton_text {
+	font-size: large;
+	margin-top:0.75em;
+	margin-left:4em;
+}
+
+.ui-btn-active {
+	background-image: linear-gradient( #444444, #2d2d2d) !important;
+}
+
+
