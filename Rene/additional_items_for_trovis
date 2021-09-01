@@ -1,0 +1,397 @@
+# This file is only needed if you are using a Samson Trovis heating controller
+# as visualized in the sample files of th 'sV simple layout'.
+
+# You can either copy the whole block below into your items.yaml file 'as is',
+# or section by section below the corresponding items in your trovis.yaml.
+
+# Remember to keep correct indents - example for amended trovis.yaml:
+
+############# original from trovis.yaml ##################
+#
+# heizung:
+#
+#     sensoren:
+#
+#         af1:
+#             desc: Außenfühler 1
+#             type: num
+#             trovis557x_var: AussentempAF1
+#             liste: []
+#             visu_acl: ro
+#             database: 'init'
+#
+############# this is copied from below ##################
+#
+#             af1min24h:
+#                 desc: Minimumtemperatur (24h)
+#                 type: num
+#                 eval: round(sh...db('min','24h', 'now'),1)
+#                 eval_trigger: ..
+#                 # cycle: 900
+#             [...]
+
+
+
+### additional items starting here:
+
+heizung:
+
+    status:   # used to switch pictures in the visu according to heating state
+        desc: Aktueller Status   # 3 Warmwasser, 2 Heizung, sonst aus; gesteuert anhand der Pumpen
+        type: num
+        eval: 3 if sh.heizung.rk3.ladepumpe()==1 else 2 if sh.heizung.rk1.umwaelzpumpe()==1 else 1
+        eval_trigger:
+            - heizung.rk1.umwaelzpumpe
+            - heizung.rk3.ladepumpe
+
+    sensoren:
+    
+        af1:
+
+            af1min24h:
+                desc: Minimumtemperatur (24h)
+                type: num
+                eval: round(sh...db('min','24h', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+            af1max24h:
+                desc: Maximumtemperatur (24h)
+                type: num
+                eval: round(sh...db('max','24h', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+            af1avg24h:
+                desc: Durchschnittstemperatur (24h)
+                type: num
+                eval: round(sh...db('avg','24h', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+            af1min7d:
+                desc: Minimumtemperatur (7d)
+                type: num
+                eval: round(sh...db('min','7d', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+            af1max7d:
+                desc: Minimumtemperatur (7d)
+                type: num
+                eval: round(sh...db('max','7d', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+            af1avg7d:
+                desc: Minimumtemperatur (7d)
+                type: num
+                eval: round(sh...db('avg','7d', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+
+        vf1:
+
+            vf1min24h:
+                desc: Minimumtemperatur (24h)
+                type: num
+                eval: round(sh...db('min','24h', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+            vf1max24h:
+                desc: Maximumtemperatur (24h)
+                type: num
+                eval: round(sh...db('max','24h', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+            vf1avg24h:
+                desc: Durchschnittstemperatur (24h)
+                type: num
+                eval: round(sh...db('avg','24h', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+            vf1min7d:
+                desc: Minimumtemperatur (7d)
+                type: num
+                eval: round(sh...db('min','7d', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+            vf1max7d:
+                desc: Minimumtemperatur (7d)
+                type: num
+                eval: round(sh...db('max','7d', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+            vf1avg7d:
+                desc: Minimumtemperatur (7d)
+                type: num
+                eval: round(sh...db('avg','7d', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+                
+        vf2:
+
+            vf2min24h:
+                desc: Minimumtemperatur (24h)
+                type: num
+                eval: round(sh...db('min','24h', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+            vf2max24h:
+                desc: Maximumtemperatur (24h)
+                type: num
+                eval: round(sh...db('max','24h', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+            vf2avg24h:
+                desc: Durchschnittstemperatur (24h)
+                type: num
+                eval: round(sh...db('avg','24h', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+            vf2min7d:
+                desc: Minimumtemperatur (7d)
+                type: num
+                eval: round(sh...db('min','7d', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+            vf2max7d:
+                desc: Minimumtemperatur (7d)
+                type: num
+                eval: round(sh...db('max','7d', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+            vf2avg7d:
+                desc: Minimumtemperatur (7d)
+                type: num
+                eval: round(sh...db('avg','7d', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+
+        vf3:
+
+            vf3min24h:
+                desc: Minimumtemperatur (24h)
+                type: num
+                eval: round(sh...db('min','24h', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+
+            vf3max24h:
+                desc: Maximumtemperatur (24h)
+                type: num
+                eval: round(sh...db('max','24h', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+
+            vf3avg24h:
+                desc: Durchschnittstemperatur (24h)
+                type: num
+                eval: round(sh...db('avg','24h', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+
+            vf3min7d:
+                desc: Minimumtemperatur (7d)
+                type: num
+                eval: round(sh...db('min','7d', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+
+            vf3max7d:
+                desc: Minimumtemperatur (7d)
+                type: num
+                eval: round(sh...db('max','7d', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+
+            vf3avg7d:
+                desc: Minimumtemperatur (7d)
+                type: num
+                eval: round(sh...db('avg','7d', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+
+
+        vf4:
+
+            vf4min24h:
+                desc: Minimumtemperatur (24h)
+                type: num
+                eval: round(sh...db('min','24h', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+
+            vf4max24h:
+                desc: Maximumtemperatur (24h)
+                type: num
+                eval: round(sh...db('max','24h', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+
+            vf4avg24h:
+                desc: Durchschnittstemperatur (24h)
+                type: num
+                eval: round(sh...db('avg','24h', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+
+            vf4min7d:
+                desc: Minimumtemperatur (7d)
+                type: num
+                eval: round(sh...db('min','7d', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+
+            vf4max7d:
+                desc: Minimumtemperatur (7d)
+                type: num
+                eval: round(sh...db('max','7d', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+
+            vf4avg7d:
+                desc: Minimumtemperatur (7d)
+                type: num
+                eval: round(sh...db('avg','7d', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+
+
+        sf1:
+
+            sf1min24h:
+                desc: Minimumtemperatur (24h)
+                type: num
+                eval: round(sh...db('min','24h', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+
+            sf1max24h:
+                desc: Maximumtemperatur (24h)
+                type: num
+                eval: round(sh...db('max','24h', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+
+            sf1avg24h:
+                desc: Durchschnittstemperatur (24h)
+                type: num
+                eval: round(sh...db('avg','24h', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+
+            sf1min7d:
+                desc: Minimumtemperatur (7d)
+                type: num
+                eval: round(sh...db('min','7d', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+
+            sf1max7d:
+                desc: Minimumtemperatur (7d)
+                type: num
+                eval: round(sh...db('max','7d', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+
+            sf1avg7d:
+                desc: Minimumtemperatur (7d)
+                type: num
+                eval: round(sh...db('avg','7d', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+
+        
+        ruef1:
+            ruef1min24h:
+                desc: Minimumtemperatur (24h)
+                type: num
+                eval: round(sh...db('min','24h', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+
+            ruef1max24h:
+                desc: Maximumtemperatur (24h)
+                type: num
+                eval: round(sh...db('max','24h', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+
+            ruef1avg24h:
+                desc: Durchschnittstemperatur (24h)
+                type: num
+                eval: round(sh...db('avg','24h', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+
+            ruef1min7d:
+                desc: Minimumtemperatur (7d)
+                type: num
+                eval: round(sh...db('min','7d', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+
+            ruef1max7d:
+                desc: Minimumtemperatur (7d)
+                type: num
+                eval: round(sh...db('max','7d', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+
+            ruef1avg7d:
+                desc: Minimumtemperatur (7d)
+                type: num
+                eval: round(sh...db('avg','7d', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+
+
+        ruef2:
+            ruef2min24h:
+                desc: Minimumtemperatur (24h)
+                type: num
+                eval: round(sh...db('min','24h', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+
+            ruef2max24h:
+                desc: Maximumtemperatur (24h)
+                type: num
+                eval: round(sh...db('max','24h', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+
+            ruef2avg24h:
+                desc: Durchschnittstemperatur (24h)
+                type: num
+                eval: round(sh...db('avg','24h', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+
+            ruef2min7d:
+                desc: Minimumtemperatur (7d)
+                type: num
+                eval: round(sh...db('min','7d', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+
+            ruef2max7d:
+                desc: Minimumtemperatur (7d)
+                type: num
+                eval: round(sh...db('max','7d', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+
+            ruef2avg7d:
+                desc: Minimumtemperatur (7d)
+                type: num
+                eval: round(sh...db('avg','7d', 'now'),1)
+                eval_trigger: ..
+                # cycle: 900
+
+                
+    rk1:
+        at_vs_sollvl:
+            desc: AT und Soll-VL in einem Item
+            type: str
+            database: 'init'
+            eval: str(sh.heizung.sensoren.af1()) + '|' + str(sh.heizung.rk1.heizkurve.vorlauf_soll())
+            eval_trigger:
+                - heizung.sensoren.af1
+                - heizung.rk1.heizkurve.vorlauf_soll
