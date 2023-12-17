@@ -3,20 +3,12 @@
 
 {% block one %}
 
-	/** geht noch nicht so richtig, sollte aber, da String stimmt **/
-	{% set pic_dir = 'pages/' ~ config_pages ~ '/pics/' %}
+	/** <script src="https://code.highcharts.com/modules/exporting.js"></script>   **/
+	/** <script src="https://code.highcharts.com/modules/export-data.js"></script> **/
 
+	<style type="text/css">   
+	</style>
 
-	/** so funktioniert es im Helios-Widget: **/
-	/**
-	{% set helios_pic_dir  = 'pics/helios' %}
-	<div><img id='{{uid}}-main-image' src="{{helios_pic_dir}}/controlled_air.svg" alt="Ventilation System"></div>
-	**/
-
-
-
-	/** <script src="https://code.highcharts.com/modules/exporting.js"></script>
-	<script src="https://code.highcharts.com/modules/export-data.js"></script>**/
 
 	<style type="text/css">
 
@@ -30,7 +22,6 @@
 			margin-left: auto;
 			margin-right: auto;
 			text-align: center;
-			margin-top: 5%;
 		}
 		
 		div#heizung_hydraulikschema img.icon {
@@ -94,8 +85,8 @@
 		
 		.heizung_aussensensor1 {
 			position: absolute;
-			margin-top: -45%;
-			margin-left: 10%;
+			margin-top: -43.75%;
+			margin-left: 2%;
 		}
 		
 		.heizung_aussensensor2 {
@@ -224,6 +215,14 @@
 			background-color: none;
 		}
 		
+		.heizkurve {
+			margin-left: 166px;
+			width: 77%;
+			position: absolute;
+			margin-top: 200px;
+		}		
+
+		
 		/* ----------- iPad Pro ----------- */
 		/* Portrait and Landscape */
 		@media only screen 
@@ -268,6 +267,7 @@
 	</style>
 	
 	<div id="heizung_hydraulikschema">
+
 		/** Hintergrundgrafik **/
 		<a href="#heizung_hydraulikschema_popup" data-rel="popup">
 			{{ basic.symbol('', 'heizung.status', '',
@@ -277,6 +277,7 @@
 				[1,2,3])
 			}}
 		</a>
+
 		/** Beschriftungen/Werte **/
 		<small>
 			<div class='heizung_vorlauf_sek1'> {{ basic.print('','heizung.sensoren.vf1','','Math.round(VAR)') }}°C </div>
@@ -285,6 +286,7 @@
 			<div class='heizung_speichersensor1'> {{ basic.print('','heizung.sensoren.sf1','','Math.round(VAR)') }} °C</div>
 			<div class='heizung_stellventil_prozent1'> {{ basic.print('','heizung.stellmotoren.rk1_3pkt.stellsignal','','Math.round(VAR)') }} % </div>
 		</small>
+
 	</div>	
 	
 	<div class="regler">
@@ -313,7 +315,7 @@
 				'pages/Rene/pics/heizung/drehschalter-heizung-9.png',
 				'pages/Rene/pics/heizung/drehschalter-heizung-10.png',],
 				[1,2,3,4,5,6,7,8,9,10]) }}
-			{{ basic.symbol('', 'heizung.rk3.schalter', '', [
+			{{ basic.symbol('', 'heizung.rk4.schalter', '', [
 				'pages/Rene/pics/heizung/drehschalter-wasser-1.png',
 				'pages/Rene/pics/heizung/drehschalter-wasser-2.png',
 				'pages/Rene/pics/heizung/drehschalter-wasser-3.png',
@@ -378,8 +380,63 @@
 			</div>
 
 			<a href="#heizung_lcd_popup" data-rel="popup"><div class="heizung_lcd_flaeche"></div></a>
-		
+
 		</div> /** LCD **/
+
+
+
+		<style type="text/css">   /** Standard-css-Farben der sV umdefinieren **/
+		.series-1-custom-css {
+			/** fill: black !important; **/
+			stroke: black !important;
+		}
+		.highcharts-color-1 {
+			fill: #a6a9a0;
+		}
+		</style>
+
+
+
+		<div class="heizkurve">  /** Heizkurve **/
+
+			/**	Testdaten	[[-25,37.0],[-19,37.0],[-11,35.1],[-10,34.8],[-9,34.5],[-8,34.2],[-7,33.95],[-6,33.6],[-5,33.2],[-4,32.9],[-3,32.5],[-2,32.2],[-1,31.8],[0,31.5],[1,31.2],[2,30.8],[3,30.4],[4,30.0],[5,29.7],[6,29.3],[7,29.0],[8,28.6],[9,28.2],[10,27.7],[11,27.2],[12,26.5],[13,25.9],[14,25.2],[15,24.5],[16,23.8],[17,23.0],[18,22.2],[19,21.2],[20,20.0]]
+			**/
+
+			{{ plot.heatingcurve('heizkurve', 'heizung.heizkurve', 'heizung.sensoren.af1', 'heizung.sensoren.vf1',
+				{
+				  chart: {height:'28%', zoomType:'xy'},
+				  title: {text:''},
+				  legend:{enabled:false},
+				  xAxis: {title: {x:0, y:-25}, labels:{y:-5}, min: -25, tickPosition:'inside', tickLength:'2', showLastLabel:false, tickInterval:5, reversed: true},
+				  yAxis: {title: {x:40, y:15}, labels:{x:20,y:15}, tickPosition:'inside', tickLength:'2', showFirstLabel:false, max: 40},
+				  plotOptions: {series: {color:'#FF0000'}},
+				  series:[{className: 'series-1-custom-css'}]
+				}
+			) }}
+			
+
+			<div style="text-align: right; float:right; position: relative; margin-top: -185px; margin-right: 10px; text-shadow: 0 0 black; color: black;">
+				<b>Heizkurve RK1</b><br/>
+			</div>
+
+			<div>
+				/**	Wassererwärmung läuft -> {{ basic.print('', 'heizung.sensoren.af1', '%.1f') }} **/
+			</div>
+			
+			<div style="text-align: right; float:right; position: relative; margin-top: -130px; margin-right: 10px; text-shadow: 0 0 black; color: black; line-height: 0.8em;">
+				<small>
+					RK1 Niveau/Steigung: {{ basic.print('', 'heizung.rk1.heizkurve.niveau') }} / {{ basic.print('', 'heizung.rk1.heizkurve.steigung', '%.1f') }} <br/>
+					Raumsoll Tag/Nacht: {{ basic.print('', 'heizung.rk1.heizkurve.tag_soll') }} / {{ basic.print('', 'heizung.rk1.heizkurve.nacht_soll') }} <br/>
+					RK1 VL min/max: {{ basic.print('', 'heizung.rk1.heizkurve.vorlauf_min', '%.0f') }} / {{ basic.print('', 'heizung.rk1.heizkurve.vorlauf_max', '%.0f') }}  <br/>
+					<br/>
+					VL SOLL/RK1 IST: {{ basic.print('', 'heizung.rk1.heizkurve.vorlauf_soll', '%.1f') }} / {{ basic.print('', 'heizung.sensoren.vf1', '%.1f') }}  <br/>
+				</small>
+			
+			</div>
+
+
+
+		</div> /** Heizkurve **/
 		
 	</div> /** regler **/
 	
@@ -410,6 +467,9 @@
 				legend:{align: 'right', floating:true, y:-3}}
 			) }}
 		</div>
+		<br/>
+		<center>Datenpunkte: 93=VF1=VL<sub>sek</sub>&nbsp;&nbsp;&nbsp;94=SF1&nbsp;&nbsp;&nbsp;95=RüF1=RL<sub>pri</sub>&nbsp;&nbsp;&nbsp;96=AF1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 106=VF4=RL<sub>sek</sub>&nbsp;&nbsp;&nbsp;107=VF3=VL<sub>pri</sub>&nbsp;&nbsp;&nbsp;108=RüF2=RL<sub>pri</sub>&nbsp;&nbsp;&nbsp;109=VF2=VL<sub>sek</sub></center>
+		<br/>
 	</div>
 
 {% endblock %}
@@ -492,8 +552,8 @@
 	<div id="heizung_plot2" class="heizung_plot">
 		<div class="heizung_plot_div">
 			{{ 	plot.period(
-				'', ['heizung.rk3.ladepumpe','heizung.sensoren.sf1'], 'raw', '2d', 'now',
-				[50,0], [65,1] , '', ['Erwärmung (SLP-Signal an)', 'SF1'], ['lightgray','#00719c'], ['areastair','area'],
+				'', ['heizung.rk4.ladepumpe','heizung.sensoren.sf1'], 'raw', '2d', 'now',
+				[50,0], [65,1] , '', ['Erwärmung (SLP-Signal)', 'SF1'], ['lightgray','#00719c'], ['areastair','area'],
 				'', '5i', [2,1], [0,1], [], 'linear', '',
 				{chart:{height:'32%', zoomType: 'xy'}, title:{text:'Warmwasser (48h)', align: 'left'},
 				yAxis:[{tickInterval:5},{visible:false}], legend:{align: 'right', floating:true, y:-3},
@@ -512,8 +572,8 @@
 		<span class="heizung_plot_popup_header" data-role="header" data-theme="c">&nbsp;&nbsp;Wochenansicht</span>
 		<div class="heizung_plot_popup_div">
 			{{ 	plot.period(
-				'', ['heizung.rk3.ladepumpe','heizung.sensoren.sf1'], 'raw', '7d', 'now',
-				[50,0], [65,1] , '', ['Erwärmung (SLP-Signal an)', 'SF1'], ['lightgray','#00719c'], ['areastair','area'],
+				'', ['heizung.rk4.ladepumpe','heizung.sensoren.sf1'], 'raw', '7d', 'now',
+				[50,0], [65,1] , '', ['Erwärmung (SLP-Signal)', 'SF1'], ['lightgray','#00719c'], ['areastair','area'],
 				'', '5i', [2,1], [0,1], [], 'linear', '',
 				{chart:{zoomType: 'xy'}, title:{text:'Warmwasser (7 Tage)', align: 'left'},
 				yAxis:[{tickInterval:5},{visible:false}], legend:{align: 'right', floating:true, y:-3},
@@ -527,9 +587,9 @@
 	<div id="heizung_plot3" class="heizung_plot">
 		<div class="heizung_plot_div">
 			{{ 	plot.period(
-				'', ['heizung.rk1.umwaelzpumpe', 'heizung.stellmotoren.rk1_3pkt.stellsignal','heizung.stellmotoren.rk2_3pkt.stellsignal'], 'raw', '2d', 'now',
-				[0,0], [1,99], '', ['UP1', 'Durchlaßventil %', 'Umschaltventil'], ['lightgrey','blue','red'], ['areastair', 'areastair','stair'],
-				'', '', [1,2,2], [], '', ['linear', 'linear','linear'], '',
+				'', ['heizung.rk1.umwaelzpumpe', 'heizung.stellmotoren.rk1_3pkt.stellsignal','heizung.rk4.ladepumpe'], 'raw', '2d', 'now',
+				[0,0], [1,99], '', ['UP1 an/aus', 'Stellventil %', '3-Wege-Ventil WW/Rk1'], ['lightgrey','blue','red'], ['areastair', 'areastair','stair'],
+				'', '', [1,2,1], [], '', ['linear', 'linear','linear'], '',
 				{chart:{height:'34%', zoomType: 'xy'}, title:{text:'Pumpe und Ventile (48h)', align: 'left'}, yAxis:[{visible:false}],
 				legend:{align: 'right', floating:true, y:-3}}
 			) }}
@@ -543,9 +603,9 @@
 		<span class="heizung_plot_popup_header" data-role="header" data-theme="c">&nbsp;&nbsp;Wochenansicht</span>
 		<div class="heizung_plot_popup_div">
 			{{ 	plot.period(
-				'', ['heizung.rk1.umwaelzpumpe', 'heizung.stellmotoren.rk1_3pkt.stellsignal','heizung.stellmotoren.rk2_3pkt.stellsignal'], 'raw', '7d', 'now',
-				[0,0], [1,100], '', ['UP1', 'Durchlaßventil %', 'Umschaltventil'], ['lightgrey','blue','red'], ['areastair', 'areastair','stair'],
-				'', '', [1,2,2], [], '', ['linear', 'linear','linear'], '',
+				'', ['heizung.rk1.umwaelzpumpe', 'heizung.stellmotoren.rk1_3pkt.stellsignal','heizung.rk4.ladepumpe'], 'raw', '7d', 'now',
+				[0,0], [1,100], '', ['UP1 an/aus', 'Stellventil %', '3-Wege-Ventil WW/Rk1'], ['lightgrey','blue','red'], ['areastair', 'areastair','stair'],
+				'', '', [1,2,1], [], '', ['linear', 'linear','linear'], '',
 				{chart:{zoomType: 'xy'}, title:{text:'Pumpe und Ventile (7 Tage)', align: 'left'}, yAxis:[{visible:false}],
 				legend:{align: 'right', floating:true, y:-3}}
 			) }}
@@ -595,117 +655,7 @@
 			}
 		});
 
-	// 	so?
-
-	//	$( ".heizung_plot_popup" ).on({
-	//		create: function() {
-	//			var w=$(window).width();
-	//			$(this).css("width", w-200);
-	//		}
-	//	});
-	
-	// alternativ: $( ".heizung_plot_popup" ).css( "width", w-200 );  --> dann aber nur 1x für alle
 		
 	</script>
 
 {% endblock %}
-
-
-
-	/**
-	<div><b>
-	Slider zum Testen mit den Werten 1 / 2 / 3, um zwischen den svg's umzuschalten:
-	{{ basic.slider('', 'zz_testitems.num1', 1, 3, 1) }} {{ basic.slider('', 'zz_testitems.num2', 1, 10, 1) }}
-	</b></div>
-	**/
-
-
-	/** LCD-ähnliche Farbe: 166,169,160    --> https://www.1001fonts.com/lcd-font.html#gallery  **/
-	
-
-
-
-	/** fontanbindung:
-	
-	@font-face {
-		font-family: GraublauWeb;
-		src: url("path/GraublauWeb.otf") format("opentype");
-	}
-
-	@font-face {
-		font-family: GraublauWeb;
-		font-weight: bold;
-		src: url("path/GraublauWebBold.otf") format("opentype");
-	}
-	
-	
-	bzw.
-	
-	
-	@font-face {
-	  font-family: 'Tangerine';
-	  font-style: normal;
-	  font-weight: normal;
-	  src: local('Tangerine'), url('http://example.com/tangerine.ttf') format('truetype');
-	}
-	body {
-	  font-family: 'Tangerine', serif;
-	  font-size: 48px;
-	}
-
-	bzw.
-	
-	<!DOCTYPE html>
-	<html>
-		<head>
-			<style>
-			@font-face {
-				font-family: myFirstFont;
-				src:local("C:\Users\Website\fonts\Harlow_Solid_Italic.ttf");
-			}
-
-			.harlow{
-				font-family: myFirstFont;
-			}
-			</style>
-		</head>
-		<body>
-			<p><b class="harlow">Note:</b> Internet Explorer 8 and earlier, do not support the @font-face rule with the WOFF format (only support for EOT format).</p>
-		</body>
-	</html>
-
-	**/
-
-
-
-
-
-	/**	
-
-	{{ 	plot.period(
-		'plot2', ['heizung.rk3.ladepumpe','heizung.sensoren.sf1'], 'raw', '1d', 'now',
-		[50,0], [65,1] , '', ['Erwärmung (SLP-Signal an)', 'SF1'], ['lightgray','#00719c'], ['areastair','area'],
-		'', '5i', [2,1], [0,1], [], 'linear', '',
-		{chart:{height:'29%', zoomType: 'xy'}, title:{text:'Warmwasser', align: 'left'}, yAxis:[{tickInterval:5},{visible:false}], legend:{align: 'right', floating:true, y:-3}, rangeSelector:{verticalAlign:'bottom',floating:true,x:-38,y:-57,inputBoxWidth:75,inputPosition:{x:40}}} 
-	)}}
-
-	{{ 	plot.period(
-		'plot3', ['heizung.rk1.umwaelzpumpe', 'heizung.stellmotoren.rk1_3pkt.stellsignal','heizung.stellmotoren.rk2_3pkt.stellsignal'], 'raw', '1d', 'now',
-		[0,0], [1,100], '', ['UP1', 'Durchlaßventil %', 'Umschaltventil'], ['lightgrey','blue','red'], ['areastair', 'areastair','stair'],
-		'', '', [1,2,2], [], '', ['linear', 'linear','linear'], '',
-		{chart:{height:'29%', zoomType: 'xy'}, title:{text:'Pumpe und Ventile', align: 'left'}, yAxis:[{visible:false}], legend:{align: 'right', floating:true, y:-3}}
-	)}}
-
-	**/
-
-	/** '#ffc','blue','red' **/
-
-
-	/** 3-Wege-Ventil
-	{{ plot.period('', 'heizung.rk1.stellsignal', 'raw', '1w', '', '', '', '', 'Ventil (%)', '#f0f', 'line', '', 'advanced') }}
-	{{ plot.period('', 'heizung.rk1.stellsignal', 'raw', '3d', '', '', '', '', 'Ventil (%)', '', 'stair', '', 'advanced') }}  **/
-
-	/** {{ plot.period('', ['heizung.sensoren.sf1', 'heizung.rk3.ladepumpe'], 'raw', '1w', '', [50,0], [65,1] , '', ['SF1', 'SLP'], [], ['line', 'areastair'], '', 'advanced', [1,2], [0,1], [], ['linear', 'linear'], '', '{yAxis:[ {visible: false} ] }' ) }} **/
-
-	/** ok so:  {{ plot.period('', ['heizung.sensoren.sf1', 'heizung.rk3.ladepumpe'], 'raw', '3d', '', [40,0], [65,1] , '', ['SF1', 'SLP'], ['#ff0',''], ['line', 'areastair'], '', 'advanced', [1,2], [0,1], [], 'linear', '',
-	{title:{text:'Warmwasser'}, yAxis:[{tickInterval:5},{visible:false}], legend:{floating:true,y:10}, rangeSelector:{verticalAlign:'bottom',floating:true,x:-38,y:-57,inputBoxWidth:75,inputPosition:{x:40}} } ) } **/					
