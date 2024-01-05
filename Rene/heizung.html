@@ -1,14 +1,11 @@
-{% extends "2blocks.html" %}
+/** Hinweis: Erfordert wegen Umstellung der SVG-Behandlung mindestens smartVISU 3.3! **/
 
+{% extends "2blocks.html" %}
 
 {% block one %}
 
-	/** <script src="https://code.highcharts.com/modules/exporting.js"></script>   **/
-	/** <script src="https://code.highcharts.com/modules/export-data.js"></script> **/
-
-	<style type="text/css">   
+	<style type="text/css">
 	</style>
-
 
 	<style type="text/css">
 
@@ -24,7 +21,7 @@
 			text-align: center;
 		}
 		
-		div#heizung_hydraulikschema img.icon {
+                div#heizung_hydraulikschema img.icon { 
 			width: 100%;
 			height:100%;
 			text-align: center;
@@ -268,12 +265,14 @@
 	
 	<div id="heizung_hydraulikschema">
 
-		/** Hintergrundgrafik **/
+		/** Interaktive Grafik mit Hydraulikschema **/
+		/** ab sV 3.3 muss wegen Verwendung von img.icon ein /ne an den SVG-Pfad angehängt werden **/
+		
 		<a href="#heizung_hydraulikschema_popup" data-rel="popup">
 			{{ basic.symbol('', 'heizung.status', '',
-				['pages/Rene/pics/heizung/aus.svg',
-				 'pages/Rene/pics/heizung/heizbetrieb.svg',
-				 'pages/Rene/pics/heizung/warmwasser.svg'],
+				['pages/Rene/pics/heizung/aus.svg/ne',
+				 'pages/Rene/pics/heizung/heizbetrieb.svg/ne',
+				 'pages/Rene/pics/heizung/warmwasser.svg/ne'],
 				[1,2,3])
 			}}
 		</a>
@@ -324,6 +323,7 @@
 				'pages/Rene/pics/heizung/drehschalter-wasser-6.png',
 				'pages/Rene/pics/heizung/drehschalter-wasser-7.png',],
 				[3,2,1,4,5,6,7]) }}
+
 		</div> /** reglerbuttons **/
 		
 		<div class="beschriftung">
@@ -385,9 +385,8 @@
 
 
 
-		<style type="text/css">   /** Standard-css-Farben der sV umdefinieren **/
+		<style type="text/css">   /** Standard css-Farben der sV umdefinieren **/
 		.series-1-custom-css {
-			/** fill: black !important; **/
 			stroke: black !important;
 		}
 		.highcharts-color-1 {
@@ -420,7 +419,10 @@
 			</div>
 
 			<div>
-				/**	Wassererwärmung läuft -> {{ basic.print('', 'heizung.sensoren.af1', '%.1f') }} **/
+				/**	
+				ToDo:
+				Wassererwärmung läuft -> {{ basic.print('', 'heizung.sensoren.af1', '%.1f') }}
+				**/
 			</div>
 			
 			<div style="text-align: right; float:right; position: relative; margin-top: -130px; margin-right: 10px; text-shadow: 0 0 black; color: black; line-height: 0.8em;">
@@ -445,7 +447,7 @@
         <a href="#" data-rel="back" data-role="button" data-icon="delete" data-iconpos="notext" class="ui-btn-right";>Close</a>
         <span data-role="header" data-theme="c" class="heizung_hydraulikschemna_popup_header">Heizungsschema</span>
 		<br/>
-		{{ basic.symbol('', 'heizung.status', '', ['pages/Rene/pics/heizung/aus_beschriftet.svg','pages/Rene/pics/heizung/heizbetrieb_beschriftet.svg','pages/Rene/pics/heizung/warmwasser_beschriftet.svg'], [1,2,3]) }}
+		{{ basic.symbol('', 'heizung.status', '', ['pages/Rene/pics/heizung/aus_beschriftet.svg/ne','pages/Rene/pics/heizung/heizbetrieb_beschriftet.svg/ne','pages/Rene/pics/heizung/warmwasser_beschriftet.svg/ne'], [1,2,3]) }}
 		<br/><br/>
 		<div class='heizung_vorlauf_sek2'> {{ basic.print('','heizung.sensoren.vf1','%.1f') }}°C </div>
 		<div class='heizung_ruecklauf_pri2'> {{ basic.print('','heizung.sensoren.ruef1','%.1f') }} °C </div>
@@ -468,7 +470,7 @@
 			) }}
 		</div>
 		<br/>
-		<center>Datenpunkte: 93=VF1=VL<sub>sek</sub>&nbsp;&nbsp;&nbsp;94=SF1&nbsp;&nbsp;&nbsp;95=RüF1=RL<sub>pri</sub>&nbsp;&nbsp;&nbsp;96=AF1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 106=VF4=RL<sub>sek</sub>&nbsp;&nbsp;&nbsp;107=VF3=VL<sub>pri</sub>&nbsp;&nbsp;&nbsp;108=RüF2=RL<sub>pri</sub>&nbsp;&nbsp;&nbsp;109=VF2=VL<sub>sek</sub></center>
+		<center>shNG Datenpunkte: 93=VF1=VL<sub>sek</sub>&nbsp;&nbsp;&nbsp;94=SF1&nbsp;&nbsp;&nbsp;95=RüF1=RL<sub>pri</sub>&nbsp;&nbsp;&nbsp;96=AF1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 106=VF4=RL<sub>sek</sub>&nbsp;&nbsp;&nbsp;107=VF3=VL<sub>pri</sub>&nbsp;&nbsp;&nbsp;108=RüF2=RL<sub>pri</sub>&nbsp;&nbsp;&nbsp;109=VF2=VL<sub>sek</sub></center>
 		<br/>
 	</div>
 
@@ -476,8 +478,7 @@
 
 
 {% block two %}
-	
-	
+
 	<style type="text/css">
 
 		.heizung_plot {
@@ -655,7 +656,6 @@
 			}
 		});
 
-		
 	</script>
 
 {% endblock %}
