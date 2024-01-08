@@ -5,9 +5,7 @@
 # Items file für smartHomeNG (Trovis-Plugin)
 # Kopieren nach <shNG>/items/trovis.yaml (meistens /usr/local/smarthome/items/trovis.yaml)
 #
-# Voreinstellung ist Minimalkonfiguration: Anlage 1.0 mit AF1, VF1 und RüF1
 # Auskommentierungen je nach Reglermodell und Hydraulik/Anlage entfernen
-# Zum Schreiben in die Datenbank jeweils Auskommentierung an database: 'init' entfernen
 # Umwandlung von 'ungültig/aus/nicht verfügbar' = 32767-->0 über Attribut invalid_to_zero: True
 
 
@@ -219,7 +217,6 @@ heizung:
                 eval_trigger: ..
                 # cycle:900
 
-
             af1avg24h:
                 desc: Durchschnittstemperatur (24h)
                 type: num
@@ -298,7 +295,6 @@ heizung:
             #     eval: round(sh...db('avg','7d', 'now'),1)
             #     eval_trigger: ..
             #     # cycle:900
-
 
         vf1:
             desc: Vorlauffühler 1
